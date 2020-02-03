@@ -20,8 +20,6 @@ class Elevator
     private static ArrayList<AllElevator> AllTypeElevatorInstance = new ArrayList<AllElevator>();
     private static ArrayList<OddElevator> OddTypeElevatorInstance = new ArrayList<OddElevator>();
     private static ArrayList<EvenElevator> EvenTypeElevatorInstance = new ArrayList<EvenElevator>();
-    private int currentFloor = 0;
-    Thread requestProcessorThread;
 
     private Elevator()
     {
@@ -47,7 +45,7 @@ class Elevator
         requestProcessorThread2.start();
         requestProcessorThread3.start();
         requestProcessorThread4.start();
-    };
+    }
 
 
     static Elevator getInstance()
@@ -226,7 +224,7 @@ class Elevator
 
 class AllElevator  implements ElevatorOperation
 {
-    public TreeSet requestSet = new TreeSet();
+    private TreeSet requestSet = new TreeSet();
     private int currentFloor = 0;
     private Direction direction = Direction.UP;
     private Type Type;
@@ -278,7 +276,7 @@ class AllElevator  implements ElevatorOperation
     }
 
     @Override
-    public void setCurrentFloor(int currentFloor) throws InterruptedException
+    public synchronized void setCurrentFloor(int currentFloor) throws InterruptedException
     {
         if (this.currentFloor > currentFloor) {
             setDirection(Direction.DOWN);
@@ -320,7 +318,7 @@ class AllElevator  implements ElevatorOperation
                     }
                 }
                 for (int i = 0; i < Elevator.getOddElevator().size(); i++) {
-                    if ((Elevator.getOddElevator().get(i).requestSet.isEmpty())) {
+                    if ((Elevator.getOddElevator().get(i).getRequestSet().isEmpty())) {
                         elevatorwaitingcount++;
                     }
                 }
@@ -348,13 +346,13 @@ class AllElevator  implements ElevatorOperation
                     }
                 }
                 for(int i=0;i<Elevator.getOddElevator().size();i++) {
-                    if ((!Elevator.getOddElevator().get(i).requestSet.isEmpty()) && Elevator.getOddElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
+                    if ((!Elevator.getOddElevator().get(i).getRequestSet().isEmpty()) && Elevator.getOddElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
 
                         Elevator.getOddElevator().get(i).getRequestProcessorThread().interrupt();
                     }
                 }
                 for(int i=0;i<Elevator.getEvenElevator().size();i++) {
-                    if ((!Elevator.getEvenElevator().get(i).requestSet.isEmpty()) && Elevator.getEvenElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
+                    if ((!Elevator.getEvenElevator().get(i).getRequestSet().isEmpty()) && Elevator.getEvenElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
 
                         Elevator.getEvenElevator().get(i).getRequestProcessorThread().interrupt();
                     }
@@ -378,7 +376,7 @@ class AllElevator  implements ElevatorOperation
 class OddElevator  implements ElevatorOperation
 {
 
-    public TreeSet requestSet = new TreeSet();
+    private TreeSet requestSet = new TreeSet();
     private int currentFloor = 0;
     private Direction direction = Direction.UP;
     private Type Type;
@@ -430,7 +428,7 @@ class OddElevator  implements ElevatorOperation
     }
 
     @Override
-    public void setCurrentFloor(int currentFloor) throws InterruptedException
+    public synchronized void setCurrentFloor(int currentFloor) throws InterruptedException
     {
         if (this.currentFloor > currentFloor) {
             setDirection(Direction.DOWN);
@@ -467,7 +465,7 @@ class OddElevator  implements ElevatorOperation
             try {
                 int elevatorwaitingcount = 0;
                 for (int i = 0; i < Elevator.getAllElevator().size(); i++) {
-                    if ((Elevator.getAllElevator().get(i).requestSet.isEmpty())) {
+                    if ((Elevator.getAllElevator().get(i).getRequestSet().isEmpty())) {
                         elevatorwaitingcount++;
                     }
                 }
@@ -477,7 +475,7 @@ class OddElevator  implements ElevatorOperation
                     }
                 }
                 for (int i = 0; i < Elevator.getOddElevator().size(); i++) {
-                    if ((Elevator.getAllElevator().get(i).requestSet.isEmpty())) {
+                    if ((Elevator.getAllElevator().get(i).getRequestSet().isEmpty())) {
                         elevatorwaitingcount++;
                     }
                 }
@@ -494,7 +492,7 @@ class OddElevator  implements ElevatorOperation
                 }
 
                 for(int i=0;i<Elevator.getAllElevator().size();i++) {
-                    if ((!Elevator.getAllElevator().get(i).requestSet.isEmpty()) && Elevator.getAllElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
+                    if ((!Elevator.getAllElevator().get(i).getRequestSet().isEmpty()) && Elevator.getAllElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
 
                         Elevator.getAllElevator().get(i).getRequestProcessorThread().interrupt();
                     }
@@ -506,7 +504,7 @@ class OddElevator  implements ElevatorOperation
                     }
                 }
                 for(int i=0;i<Elevator.getEvenElevator().size();i++) {
-                    if ((!Elevator.getEvenElevator().get(i).requestSet.isEmpty()) && Elevator.getEvenElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
+                    if ((!Elevator.getEvenElevator().get(i).getRequestSet().isEmpty()) && Elevator.getEvenElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
 
                         Elevator.getEvenElevator().get(i).getRequestProcessorThread().interrupt();
                     }
@@ -530,7 +528,7 @@ class OddElevator  implements ElevatorOperation
 class EvenElevator  implements ElevatorOperation
 {
 
-    public TreeSet requestSet = new TreeSet();
+    private TreeSet requestSet = new TreeSet();
     private int currentFloor = 0;
     private Direction direction = Direction.UP;
     private Type Type;
@@ -582,7 +580,7 @@ class EvenElevator  implements ElevatorOperation
     }
 
     @Override
-    public void setCurrentFloor(int currentFloor) throws InterruptedException
+    public synchronized void setCurrentFloor(int currentFloor) throws InterruptedException
     {
         if (this.currentFloor > currentFloor) {
             setDirection(Direction.DOWN);
@@ -619,17 +617,17 @@ class EvenElevator  implements ElevatorOperation
             try {
                 int elevatorwaitingcount = 0;
                 for (int i = 0; i < Elevator.getAllElevator().size(); i++) {
-                    if ((Elevator.getAllElevator().get(i).requestSet.isEmpty())) {
+                    if ((Elevator.getAllElevator().get(i).getRequestSet().isEmpty())) {
                         elevatorwaitingcount++;
                     }
                 }
                 for (int i = 0; i < Elevator.getOddElevator().size(); i++) {
-                    if ((Elevator.getOddElevator().get(i).requestSet.isEmpty())) {
+                    if ((Elevator.getOddElevator().get(i).getRequestSet().isEmpty())) {
                         elevatorwaitingcount++;
                     }
                 }
                 for (int i = 0; i < Elevator.getOddElevator().size(); i++) {
-                    if ((Elevator.getAllElevator().get(i).requestSet.isEmpty())) {
+                    if ((Elevator.getAllElevator().get(i).getRequestSet().isEmpty())) {
                         elevatorwaitingcount++;
                     }
                 }
@@ -646,12 +644,12 @@ class EvenElevator  implements ElevatorOperation
                 }
 
                 for(int i=0;i<Elevator.getAllElevator().size();i++) {
-                    if ((!Elevator.getAllElevator().get(i).requestSet.isEmpty()) && Elevator.getAllElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
+                    if ((!Elevator.getAllElevator().get(i).getRequestSet().isEmpty()) && Elevator.getAllElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
                         Elevator.getAllElevator().get(i).getRequestProcessorThread().interrupt();
                     }
                 }
                 for(int i=0;i<Elevator.getOddElevator().size();i++) {
-                    if ((!Elevator.getOddElevator().get(i).requestSet.isEmpty()) && Elevator.getOddElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
+                    if ((!Elevator.getOddElevator().get(i).getRequestSet().isEmpty()) && Elevator.getOddElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
                         Elevator.getOddElevator().get(i).getRequestProcessorThread().interrupt();
                     }
                 }
@@ -742,7 +740,7 @@ class RequestProcessor implements Runnable
                             }
                         }
                         System.out.println(Allbestelevator.getRequestProcessorThread().getName() + " Welcome to Floor : " + Allbestelevator.getCurrentFloor());
-                        Allbestelevator.requestSet.remove(Allbestelevator.getCurrentFloor());
+                        Allbestelevator.getRequestSet().remove(Allbestelevator.getCurrentFloor());
                     }
                 }catch(InterruptedException e){
                     if(Allbestelevator.getCurrentFloor() != nextfloor){
@@ -784,7 +782,7 @@ class RequestProcessor implements Runnable
                                 }
                             }
                             System.out.println(Oddbestelevator.getRequestProcessorThread().getName() + " Welcome to Floor : " + Oddbestelevator.getCurrentFloor());
-                            Oddbestelevator.requestSet.remove(Oddbestelevator.getCurrentFloor());
+                            Oddbestelevator.getRequestSet().remove(Oddbestelevator.getCurrentFloor());
                         }
                     }catch(InterruptedException e){
                         if(Oddbestelevator.getCurrentFloor() != nextfloor){
@@ -825,7 +823,7 @@ class RequestProcessor implements Runnable
                                     }
                                 }
                                 System.out.println(Evenbestelevator.getRequestProcessorThread().getName() + " Welcome to Floor : " + Evenbestelevator.getCurrentFloor());
-                                Evenbestelevator.requestSet.remove(Evenbestelevator.getCurrentFloor());
+                                Evenbestelevator.getRequestSet().remove(Evenbestelevator.getCurrentFloor());
                             }
                         } catch (InterruptedException e) {
                             if (Evenbestelevator.getCurrentFloor() != nextfloor) {
@@ -931,7 +929,13 @@ class RequestListener implements Runnable
     }
 
     private boolean isValidFloorNumber(String s) {
-        return (s != null) && s.matches("\\d{1,2}");
+        try {
+            return (s != null) && (Integer.parseInt(s)<13);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 }
 
