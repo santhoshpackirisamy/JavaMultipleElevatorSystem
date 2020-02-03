@@ -30,10 +30,10 @@ class Elevator
         Thread requestProcessorThread3 = new Thread(new RequestProcessor(),"Lift3");
         Thread requestProcessorThread4 = new Thread(new RequestProcessor(),"Lift4");
 
-        AllElevator elevator1 = new AllElevator(Type.ALL,requestProcessorThread1);
-        AllElevator elevator2 = new AllElevator(Type.ALL,requestProcessorThread2);
-        OddElevator elevator3 = new OddElevator(Type.ODD,requestProcessorThread3);
-        EvenElevator elevator4 = new EvenElevator(Type.EVEN,requestProcessorThread4);
+        AllElevator elevator1 = new AllElevator(0,Direction.UP,Type.ALL,requestProcessorThread1);
+        AllElevator elevator2 = new AllElevator(0,Direction.UP,Type.ALL,requestProcessorThread2);
+        OddElevator elevator3 = new OddElevator(0,Direction.UP,Type.ODD,requestProcessorThread3);
+        EvenElevator elevator4 = new EvenElevator(0,Direction.UP,Type.EVEN,requestProcessorThread4);
 
         AllTypeElevatorInstance.add(elevator1);
         AllTypeElevatorInstance.add(elevator2);
@@ -225,13 +225,13 @@ class Elevator
 class AllElevator  implements ElevatorOperation
 {
     private TreeSet requestSet = new TreeSet();
-    private int currentFloor = 0;
-    private Direction direction = Direction.UP;
+    private int currentFloor;
+    private Direction direction;
     private Type Type;
     private Thread requestProcessorThread;
 
-    public AllElevator(Type type,Thread requestProcessorThread) {
-        Type = type;this.requestProcessorThread=requestProcessorThread;
+    public AllElevator(int currentFloor,Direction direction,Type type,Thread requestProcessorThread) {
+        this.currentFloor=currentFloor;this.direction=direction;this.Type = type;this.requestProcessorThread=requestProcessorThread;
     }
 
     @Override
@@ -377,13 +377,13 @@ class OddElevator  implements ElevatorOperation
 {
 
     private TreeSet requestSet = new TreeSet();
-    private int currentFloor = 0;
-    private Direction direction = Direction.UP;
+    private int currentFloor;
+    private Direction direction;
     private Type Type;
     private Thread requestProcessorThread;
 
-    public OddElevator(Type type,Thread requestProcessorThread) {
-        Type = type;this.requestProcessorThread=requestProcessorThread;
+    public OddElevator(int currentFloor,Direction direction,Type type,Thread requestProcessorThread) {
+        this.currentFloor=currentFloor;this.direction=direction;this.Type = type;this.requestProcessorThread=requestProcessorThread;
     }
 
     @Override
@@ -529,13 +529,13 @@ class EvenElevator  implements ElevatorOperation
 {
 
     private TreeSet requestSet = new TreeSet();
-    private int currentFloor = 0;
-    private Direction direction = Direction.UP;
+    private int currentFloor;
+    private Direction direction;
     private Type Type;
     private Thread requestProcessorThread;
 
-    public EvenElevator(Type type,Thread requestProcessorThread) {
-        Type = type;this.requestProcessorThread=requestProcessorThread;
+    public EvenElevator(int currentFloor,Direction direction,Type type,Thread requestProcessorThread) {
+        this.currentFloor=currentFloor;this.direction=direction;this.Type = type;this.requestProcessorThread=requestProcessorThread;
     }
 
     @Override
