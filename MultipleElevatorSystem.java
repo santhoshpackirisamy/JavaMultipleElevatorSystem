@@ -294,7 +294,7 @@ class AllElevator  implements ElevatorOperation
 
         System.out.println(requestProcessorThread.getName() + " Floor : " + currentFloor);
 
-        Thread.sleep(500);
+        Thread.sleep( 1500);
     }
 
     @Override
@@ -348,26 +348,26 @@ class AllElevator  implements ElevatorOperation
 
                 for(int i=0;i<Elevator.getAllElevator().size();i++) {
                     if ((!Elevator.getAllElevator().get(i).requestSet.isEmpty()) && Elevator.getAllElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
-                        System.out.println(Elevator.getAllElevator().get(i).getRequestProcessorThread().getName() + " is started and "+ this.requestProcessorThread.getName() + " interrupted");
+
                         Elevator.getAllElevator().get(i).getRequestProcessorThread().interrupt();
                     }
                 }
                 for(int i=0;i<Elevator.getOddElevator().size();i++) {
                     if ((!Elevator.getOddElevator().get(i).requestSet.isEmpty()) && Elevator.getOddElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
-                        System.out.println(Elevator.getOddElevator().get(i).getRequestProcessorThread().getName() + " is started and "+ this.requestProcessorThread.getName() + " interrupted");
+
                         Elevator.getOddElevator().get(i).getRequestProcessorThread().interrupt();
                     }
                 }
                 for(int i=0;i<Elevator.getEvenElevator().size();i++) {
                     if ((!Elevator.getEvenElevator().get(i).requestSet.isEmpty()) && Elevator.getEvenElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
-                        System.out.println(Elevator.getEvenElevator().get(i).getRequestProcessorThread().getName() + " is started and "+ this.requestProcessorThread.getName() + " interrupted");
+
                         Elevator.getEvenElevator().get(i).getRequestProcessorThread().interrupt();
                     }
                 }
                 if(this.getRequestProcessorThread().getState() != Thread.State.WAITING)
                 {
-                    System.out.println("Thread name " + this.getRequestProcessorThread().getName());
-                    this.getRequestProcessorThread().wait();
+
+                    wait();
                 }
             } catch (InterruptedException ignored) {
             }
@@ -446,7 +446,7 @@ class OddElevator  implements ElevatorOperation
 
         System.out.println(requestProcessorThread.getName() + " Floor : " + currentFloor);
 
-        Thread.sleep(500);
+        Thread.sleep( 1500);
     }
 
     @Override
@@ -500,26 +500,26 @@ class OddElevator  implements ElevatorOperation
 
                 for(int i=0;i<Elevator.getAllElevator().size();i++) {
                     if ((!Elevator.getAllElevator().get(i).requestSet.isEmpty()) && Elevator.getAllElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
-                        System.out.println(Elevator.getAllElevator().get(i).getRequestProcessorThread().getName() + " is started and "+ this.requestProcessorThread.getName() + " interrupted");
+
                         Elevator.getAllElevator().get(i).getRequestProcessorThread().interrupt();
                     }
                 }
                 for(int i=0;i<Elevator.getOddElevator().size();i++) {
                     if ((!Elevator.getOddElevator().get(i).requestSet.isEmpty()) && Elevator.getOddElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
-                        System.out.println(Elevator.getOddElevator().get(i).getRequestProcessorThread().getName() + " is started and "+ this.requestProcessorThread.getName() + " interrupted");
+
                         Elevator.getOddElevator().get(i).getRequestProcessorThread().interrupt();
                     }
                 }
                 for(int i=0;i<Elevator.getEvenElevator().size();i++) {
                     if ((!Elevator.getEvenElevator().get(i).requestSet.isEmpty()) && Elevator.getEvenElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
-                        System.out.println(Elevator.getEvenElevator().get(i).getRequestProcessorThread().getName() + " is started and "+ this.requestProcessorThread.getName() + " interrupted");
+
                         Elevator.getEvenElevator().get(i).getRequestProcessorThread().interrupt();
                     }
                 }
                 if(this.getRequestProcessorThread().getState() != Thread.State.WAITING)
                 {
-                        System.out.println("Thread name " + this.getRequestProcessorThread().getName());
-                        this.getRequestProcessorThread().wait();
+
+                        wait();
                 }
             } catch (InterruptedException ignored) {
             }
@@ -598,7 +598,7 @@ class EvenElevator  implements ElevatorOperation
 
         System.out.println(requestProcessorThread.getName() + " Floor : " + currentFloor);
 
-        Thread.sleep(500);
+        Thread.sleep( 1500);
     }
 
     @Override
@@ -652,26 +652,23 @@ class EvenElevator  implements ElevatorOperation
 
                 for(int i=0;i<Elevator.getAllElevator().size();i++) {
                     if ((!Elevator.getAllElevator().get(i).requestSet.isEmpty()) && Elevator.getAllElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
-                        System.out.println(Elevator.getAllElevator().get(i).getRequestProcessorThread().getName() + " is started and "+ this.requestProcessorThread.getName() + " interrupted");
                         Elevator.getAllElevator().get(i).getRequestProcessorThread().interrupt();
                     }
                 }
                 for(int i=0;i<Elevator.getOddElevator().size();i++) {
                     if ((!Elevator.getOddElevator().get(i).requestSet.isEmpty()) && Elevator.getOddElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
-                        System.out.println(Elevator.getOddElevator().get(i).getRequestProcessorThread().getName() + " is started and "+ this.requestProcessorThread.getName() + " interrupted");
                         Elevator.getOddElevator().get(i).getRequestProcessorThread().interrupt();
                     }
                 }
                 for(int i=0;i<Elevator.getEvenElevator().size();i++) {
                     if ((!Elevator.getEvenElevator().get(i).requestSet.isEmpty()) && Elevator.getEvenElevator().get(i).getRequestProcessorThread().getState() == Thread.State.WAITING) {
-                        System.out.println(Elevator.getEvenElevator().get(i).getRequestProcessorThread().getName() + " is started and "+ this.requestProcessorThread.getName() + " interrupted");
                         Elevator.getEvenElevator().get(i).getRequestProcessorThread().interrupt();
                     }
                 }
                 if(this.getRequestProcessorThread().getState() != Thread.State.WAITING)
                 {
-                    System.out.println("Thread name " + this.getRequestProcessorThread().getName());
-                    this.getRequestProcessorThread().wait();
+
+                    wait();
                 }
             } catch (InterruptedException ignored) {
             }
