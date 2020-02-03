@@ -11,7 +11,6 @@ public class MultipleElevatorSystem
     {
         System.out.println("******************Welcome To Mylift******************");
         Elevator elevator = Elevator.getInstance();
-        elevator.InitializationData();
     }
 }
 
@@ -25,11 +24,6 @@ class Elevator
     Thread requestProcessorThread;
 
     private Elevator()
-    {
-
-    };
-
-    public void InitializationData()
     {
         Thread requestListenerThread = new Thread(new RequestListener(),"RequestListenerThread");
 
@@ -53,7 +47,8 @@ class Elevator
         requestProcessorThread2.start();
         requestProcessorThread3.start();
         requestProcessorThread4.start();
-    }
+    };
+
 
     static Elevator getInstance()
     {
@@ -765,11 +760,27 @@ class RequestProcessor implements Runnable
                         if (nextfloor >= 0) {
                             if (currentFloor > nextfloor) {
                                 while (currentFloor > nextfloor) {
-                                    Oddbestelevator.setCurrentFloor(--currentFloor);
+                                    if (currentFloor==1)
+                                    {
+                                        currentFloor--;
+                                    }
+                                    else
+                                    {
+                                        currentFloor = currentFloor-2;
+                                    }
+                                    Oddbestelevator.setCurrentFloor(currentFloor);
                                 }
                             } else {
                                 while (currentFloor < nextfloor) {
-                                    Oddbestelevator.setCurrentFloor(++currentFloor);
+                                    if (currentFloor==0)
+                                    {
+                                        currentFloor++;
+                                    }
+                                    else
+                                    {
+                                        currentFloor = currentFloor+2;
+                                    }
+                                    Oddbestelevator.setCurrentFloor(currentFloor);
                                 }
                             }
                             System.out.println(Oddbestelevator.getRequestProcessorThread().getName() + " Welcome to Floor : " + Oddbestelevator.getCurrentFloor());
@@ -790,11 +801,27 @@ class RequestProcessor implements Runnable
                             if (nextfloor >= 0) {
                                 if (currentFloor > nextfloor) {
                                     while (currentFloor > nextfloor) {
-                                        Evenbestelevator.setCurrentFloor(--currentFloor);
+                                        if (currentFloor<=2)
+                                        {
+                                            currentFloor--;
+                                        }
+                                        else
+                                        {
+                                            currentFloor = currentFloor-2;
+                                        }
+                                        Evenbestelevator.setCurrentFloor(currentFloor);
                                     }
                                 } else {
                                     while (currentFloor < nextfloor) {
-                                        Evenbestelevator.setCurrentFloor(++currentFloor);
+                                        if (currentFloor<2)
+                                        {
+                                            currentFloor++;
+                                        }
+                                        else
+                                        {
+                                            currentFloor = currentFloor+2;
+                                        }
+                                        Evenbestelevator.setCurrentFloor(currentFloor);
                                     }
                                 }
                                 System.out.println(Evenbestelevator.getRequestProcessorThread().getName() + " Welcome to Floor : " + Evenbestelevator.getCurrentFloor());
