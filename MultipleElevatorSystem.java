@@ -7,31 +7,13 @@ import static java.lang.Math.abs;
 
 public class MultipleElevatorSystem
 {
+    public static ArrayList<AllElevator> AllTypeElevatorInstance = new ArrayList<AllElevator>();
+    public static ArrayList<OddElevator> OddTypeElevatorInstance = new ArrayList<OddElevator>();
+    public static ArrayList<EvenElevator> EvenTypeElevatorInstance = new ArrayList<EvenElevator>();
+
     public static void main(String[] args)
     {
         System.out.println("******************Welcome To Mylift******************");
-        Elevator elevator = Elevator.getInstance();
-        elevator.InitializationData();
-    }
-}
-
-class Elevator
-{
-    private static Elevator elevator = null;
-    private static ArrayList<AllElevator> AllTypeElevatorInstance = new ArrayList<AllElevator>();
-    private static ArrayList<OddElevator> OddTypeElevatorInstance = new ArrayList<OddElevator>();
-    private static ArrayList<EvenElevator> EvenTypeElevatorInstance = new ArrayList<EvenElevator>();
-    private int currentFloor = 0;
-    Thread requestProcessorThread;
-
-    private Elevator()
-    {
-
-    };
-
-    public void InitializationData()
-    {
-        Thread requestListenerThread = new Thread(new RequestListener(),"RequestListenerThread");
 
         Thread requestProcessorThread1 = new Thread(new RequestProcessor(),"Lift1");
         Thread requestProcessorThread2 = new Thread(new RequestProcessor(),"Lift2");
@@ -48,11 +30,58 @@ class Elevator
         OddTypeElevatorInstance.add(elevator3);
         EvenTypeElevatorInstance.add(elevator4);
 
-        requestListenerThread.start();
         requestProcessorThread1.start();
         requestProcessorThread2.start();
         requestProcessorThread3.start();
         requestProcessorThread4.start();
+
+        System.out.println("******************Welcome To Mylift******************");
+
+        Elevator elevator = Elevator.getInstance();
+        elevator.InitializationData();
+    }
+}
+
+class Elevator
+{
+    private static Elevator elevator = null;
+//    private static ArrayList<AllElevator> AllTypeElevatorInstance = new ArrayList<AllElevator>();
+//    private static ArrayList<OddElevator> OddTypeElevatorInstance = new ArrayList<OddElevator>();
+//    private static ArrayList<EvenElevator> EvenTypeElevatorInstance = new ArrayList<EvenElevator>();
+    private int currentFloor = 0;
+    Thread requestProcessorThread;
+
+    private Elevator()
+    {
+
+    };
+
+    public void InitializationData()
+    {
+        Thread requestListenerThread = new Thread(new RequestListener(),"RequestListenerThread");
+
+        requestListenerThread.start();
+
+//        Thread requestProcessorThread1 = new Thread(new RequestProcessor(),"Lift1");
+//        Thread requestProcessorThread2 = new Thread(new RequestProcessor(),"Lift2");
+//        Thread requestProcessorThread3 = new Thread(new RequestProcessor(),"Lift3");
+//        Thread requestProcessorThread4 = new Thread(new RequestProcessor(),"Lift4");
+//
+//        AllElevator elevator1 = new AllElevator(Type.ALL,requestProcessorThread1);
+//        AllElevator elevator2 = new AllElevator(Type.ALL,requestProcessorThread2);
+//        OddElevator elevator3 = new OddElevator(Type.ODD,requestProcessorThread3);
+//        EvenElevator elevator4 = new EvenElevator(Type.EVEN,requestProcessorThread4);
+//
+//        AllTypeElevatorInstance.add(elevator1);
+//        AllTypeElevatorInstance.add(elevator2);
+//        OddTypeElevatorInstance.add(elevator3);
+//        EvenTypeElevatorInstance.add(elevator4);
+//
+//        requestListenerThread.start();
+//        requestProcessorThread1.start();
+//        requestProcessorThread2.start();
+//        requestProcessorThread3.start();
+//        requestProcessorThread4.start();
     }
 
     static Elevator getInstance()
@@ -76,10 +105,10 @@ class Elevator
         {
             EvenElevator elevatoriterator;
 
-            for(int i=0;i<Elevator.EvenTypeElevatorInstance.size();i++)
+            for(int i=0;i<MultipleElevatorSystem.EvenTypeElevatorInstance.size();i++)
             {
                 int currentfloor=0;
-                elevatoriterator = Elevator.EvenTypeElevatorInstance.get(i);
+                elevatoriterator = MultipleElevatorSystem.EvenTypeElevatorInstance.get(i);
                 currentfloor = elevatoriterator.getCurrentFloor();
                 if(floor > currentfloor && elevatoriterator.getDirection() == Direction.UP)
                 {
@@ -114,10 +143,10 @@ class Elevator
         {
             OddElevator elevatoriterator;
 
-            for(int i=0;i<Elevator.OddTypeElevatorInstance.size();i++)
+            for(int i=0;i<MultipleElevatorSystem.OddTypeElevatorInstance.size();i++)
             {
                 int currentfloor=0;
-                elevatoriterator = Elevator.OddTypeElevatorInstance.get(i);
+                elevatoriterator = MultipleElevatorSystem.OddTypeElevatorInstance.get(i);
                 currentfloor = elevatoriterator.getCurrentFloor();
                 if(floor > currentfloor && elevatoriterator.getDirection() == Direction.UP)
                 {
@@ -152,10 +181,10 @@ class Elevator
 
         AllElevator elevatoriterator;
 
-        for(int i=0;i<Elevator.AllTypeElevatorInstance.size();i++)
+        for(int i=0;i<MultipleElevatorSystem.AllTypeElevatorInstance.size();i++)
         {
             int curflr=0;
-            elevatoriterator = Elevator.AllTypeElevatorInstance.get(i);
+            elevatoriterator = MultipleElevatorSystem.AllTypeElevatorInstance.get(i);
             curflr = elevatoriterator.getCurrentFloor();
             if(elevatoriterator.getRequestSet().isEmpty() && elevatoriterator.getType() == Type.ALL)
             {
@@ -170,9 +199,9 @@ class Elevator
 
         if(Allbestelevator==null && Oddbestelevator==null && Evenbestelevator==null)
         {
-            for(int i=0;i<Elevator.AllTypeElevatorInstance.size();i++)
+            for(int i=0;i<MultipleElevatorSystem.AllTypeElevatorInstance.size();i++)
             {
-                elevatoriterator = Elevator.AllTypeElevatorInstance.get(i);
+                elevatoriterator = MultipleElevatorSystem.AllTypeElevatorInstance.get(i);
                 if(elevatoriterator.getRequestProcessorThread().getState() == Thread.State.WAITING)
                 {
                     Allbestelevator = elevatoriterator;
@@ -214,17 +243,17 @@ class Elevator
 
     public static ArrayList<AllElevator> getAllElevator()
     {
-        return AllTypeElevatorInstance;
+        return MultipleElevatorSystem.AllTypeElevatorInstance;
     }
 
     public static ArrayList<OddElevator> getOddElevator()
     {
-        return OddTypeElevatorInstance;
+        return MultipleElevatorSystem.OddTypeElevatorInstance;
     }
 
     public static ArrayList<EvenElevator> getEvenElevator()
     {
-        return EvenTypeElevatorInstance;
+        return MultipleElevatorSystem.EvenTypeElevatorInstance;
     }
 
 }
@@ -367,7 +396,7 @@ class AllElevator  implements ElevatorOperation
                 if(this.getRequestProcessorThread().getState() != Thread.State.WAITING)
                 {
                     System.out.println("Thread name " + this.getRequestProcessorThread().getName());
-                    this.getRequestProcessorThread().wait();
+                    wait();
                 }
             } catch (InterruptedException ignored) {
             }
@@ -519,7 +548,7 @@ class OddElevator  implements ElevatorOperation
                 if(this.getRequestProcessorThread().getState() != Thread.State.WAITING)
                 {
                         System.out.println("Thread name " + this.getRequestProcessorThread().getName());
-                        this.getRequestProcessorThread().wait();
+                        wait();
                 }
             } catch (InterruptedException ignored) {
             }
@@ -670,8 +699,7 @@ class EvenElevator  implements ElevatorOperation
                 }
                 if(this.getRequestProcessorThread().getState() != Thread.State.WAITING)
                 {
-                    System.out.println("Thread name " + this.getRequestProcessorThread().getName());
-                    this.getRequestProcessorThread().wait();
+                    wait();
                 }
             } catch (InterruptedException ignored) {
             }
